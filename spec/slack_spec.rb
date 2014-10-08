@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe 'slack' do
-  it 'it can send a message' do
+describe 'Slack' do
+  it 'can send a message' do
 
-    token   = ENV['SLACK_TOKEN']
+    token = ENV['token']
+    channel  = ENV['channel']
 
     service_instance = service_instance('slack')
 
     params = {
-      'token'   => token,
-      'channel' => '#general',
-      'text'    => 'whatup'
+      'token' => token,
+      'channel' => channel,
+      'text' => 'hey'
     }
 
-    service_instance.test_action('send', params) do
-      expect_info message: 'Message Sent'
-      expect_return
+    service_instance.test_action('send',params) do
+      expect_info
     end
   end
 end
