@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'slack' do
-  it 'it can send a message' do
+  it 'can send a message' do
 
-    token   = ENV['SLACK_TOKEN']
+    token = ENV['SLACK_TOKEN']
 
     service_instance = service_instance('slack')
 

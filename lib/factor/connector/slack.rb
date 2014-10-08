@@ -66,46 +66,74 @@ Factor::Connector.service 'slack' do
           if http_response.body
             response = JSON.parse(http_response.body)
             if response['error']
-              fail "Couldn't create web hook: #{response['error']['message']}"
+              fail "Could not create web hook: #{response['error']['message']}"
             elsif response['id']
               hook_id = response['id']
             end
           end
         end
 
+        hook_url = web_hook id: listener_id do
+          start do |listener_start_params, hook_data, _req, _res|
+            info 'Triggering workflow...'
+            begin
+              filter = listener_start_params['filter']
 
+              if hook_data['item']['message'] && hook_data['item']['message']['message']
+                original_message = hook_data['item']['message']['message']
+                hook_data['message']  = original_message
+
+              if filter
+                regexp               = Regexp.new(filter)
+                matches              = regexp.match(original_message).captures
+                hook_data['matches'] = matches
+              end
+            end
+
+            hook_data['hook_id']  = hook_id
+            rescue => ex
+              fail "Could not parse message from Slack", exception: ex
+            end
+
+            begin
+              start_workflow hook_data
+            rescue => ex
+              fail 'Internal error: failed to send message for next step', exception: ex
+            end
+          end
+        end
+
+        action "send" do |params|
+
+          token   = params['token']
+          channel = params['channel']
+          text    = params['text']
+
+          fail 'Token is required' unless token
+          fail 'Channel is required' unless channel
+          fail 'Text is required' unless text
+
+          payload = {
+            token:   token,
+            channel: channel,
+            text:    text
+          }
+
+          info "Posting message `#{text}` to channel #{channel}"
+          begin
+            uri          = 'https://slack.com/api/chat.postMessage'
+            raw_response = RestClient.post(uri, payload)
+            response     = JSON.parse(raw_response)
+          rescue
+            fail 'Unable to deliver your message'
+          end
+
+          fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+          action_callback response
+        end
       end
     end
-  end
-
-  action "send" do |params|
-
-    token   = params['token']
-    channel = params['channel']
-    text    = params['text']
-
-    fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
-    fail 'Text is required' unless text
-
-    payload = {
-      token:   token,
-      channel: channel,
-      text:    text
-    }
-
-    info "Posting message `#{text}` to channel #{channel}"
-    begin
-      uri          = 'https://slack.com/api/chat.postMessage'
-      raw_response = RestClient.post(uri, payload)
-      response     = JSON.parse(raw_response)
-    rescue
-      fail 'Unable to deliver your message'
-    end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
-
-    action_callback response
   end
 end
 
