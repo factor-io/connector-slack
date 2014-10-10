@@ -9,7 +9,10 @@ Factor.io Slack Connector
 
 Slack Connector for Factor.io
 
-The connector-slack gem is used to run actions for Slack. An action can be posting a message, changing the channel top or inviting another user to the channel.
+The connector-slack ruby gem is used to run actions in Slack. It was built with the [factor.io connector-api](https://github.com/factor-io/connector-api) An action can be posting a message, uploading a file or inviting another user to the channel.
+
+## Using connector-slack
+To use the actions defined well need to generate a [Token](https://api.slack.com/). 
 
 ## Testing
-We use rspec, to run tests locally we just need to clone the repo, set the environmental variables that a at the top of the spec files and run rake in put terminal
+To run tests locally we need to clone the repo, set the env variables that are referred to at top of the spec files. Then, we run rake in our terminal.
