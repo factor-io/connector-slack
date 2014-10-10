@@ -5,7 +5,7 @@ describe 'slack' do
 
     token = ENV['token']
 
-    service_instance = service_instance('slack')
+    service_instance = service_instance('slack_channel')
 
     params = {
       'token' => token,
@@ -25,7 +25,7 @@ describe 'slack' do
     channel = ENV['channel']
     content = File.open(file, 'rb').read
 
-    service_instance = service_instance('slack')
+    service_instance = service_instance('slack_channel')
 
     params = {
       'token' => token,

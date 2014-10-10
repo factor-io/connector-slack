@@ -1,7 +1,7 @@
 require 'factor-connector-api'
 require 'rest_client'
 
-Factor::Connector.service 'slack' do
+Factor::Connector.service 'slack_channel' do
   action "send" do |params|
 
     token   = params['token']
