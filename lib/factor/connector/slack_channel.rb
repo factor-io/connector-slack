@@ -66,8 +66,8 @@ Factor::Connector.service 'slack_channel' do
   action "invite" do |params|
 
     token      = params['token']
-    channel_id = params['channel_id']
-    user_id    = params['user_id']
+    channel = params['channel']
+    user    = params['user']
 
     fail 'Token is required' unless token
     fail 'Channel is required' unless channel
@@ -75,8 +75,8 @@ Factor::Connector.service 'slack_channel' do
 
     payload = {
       token:   token,
-      channel: channel_id,
-      user:    user_id
+      channel: channel,
+      user:    user
     }
 
     info "Inviting #{user} to group #{channel}"
