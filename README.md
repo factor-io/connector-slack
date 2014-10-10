@@ -8,3 +8,8 @@ Factor.io Slack Connector
 ===============
 
 Slack Connector for Factor.io
+
+The connector-slack gem is used to run actions for Slack. An action can be posting a message, changing the channel top or inviting another user to the channel.
+
+## Testing
+We use rspec, to run tests locally we just need to clone the repo, set the environmental variables that a at the top of the spec files and run rake in put terminal
