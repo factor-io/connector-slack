@@ -12,7 +12,7 @@ Factor::Connector.service 'slack_group' do
 
     payload = {
       token: token,
-      name:  name,
+      name:  "thing",
     }
 
     info "Creating group `#{name}`"
@@ -28,3 +28,4 @@ Factor::Connector.service 'slack_group' do
 
     action_callback response
   end
+end
