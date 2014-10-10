@@ -20,3 +20,7 @@ To use the actions defined well need to generate a [Token](https://api.slack.com
 
 ## Testing
 To run tests locally we need to clone the repo, set the env variables that are referred to at top of the spec files. Then, we run rake in our terminal.
+
+## Contribute
+Want to contribute?
+https://github.com/factor-io/factor/wiki/Contribution
