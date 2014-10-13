@@ -8,14 +8,14 @@ Factor::Connector.service 'slack_group' do
     name  = params['name']
 
     fail 'Token is required' unless token
-    fail 'Name is required' unless name
+    fail 'Name required' unless name
 
     payload = {
       token: token,
-      name:  "thing",
+      name:  name,
     }
 
-    info "Creating group `#{name}`"
+    info "Creating Group"
     begin
       uri          = 'https://slack.com/api/groups.create'
       raw_response = RestClient.post(uri, payload)
@@ -32,8 +32,8 @@ Factor::Connector.service 'slack_group' do
   action "invite" do |params|
 
     token      = params['token']
-    channel_id = params['channel_id']
-    user_id    = params['user_id']
+    channel    = params['channel']
+    user       = params['user']
 
     fail 'Token is required' unless token
     fail 'Channel is required' unless channel
@@ -41,11 +41,11 @@ Factor::Connector.service 'slack_group' do
 
     payload = {
       token:   token,
-      channel: channel_id,
-      user:    user_id
+      channel: channel,
+      user:    user
     }
 
-    info "Inviting #{user} to group #{channel}"
+    info "Inviting User"
     begin
       uri          = 'https://slack.com/api/groups.invite'
       raw_response = RestClient.post(uri, payload)

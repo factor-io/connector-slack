@@ -14,7 +14,7 @@ describe 'slack' do
     }
 
     service_instance.test_action('send', params) do
-      expect_info
+      expect_info message: "Posting Message"
     end
   end
 
@@ -34,7 +34,7 @@ describe 'slack' do
     }
 
     service_instance.test_action('upload', params) do
-      expect_info
+      expect_info message: "Uploading File"
       file.unlink
     end
   end
@@ -52,7 +52,7 @@ describe 'slack' do
     }
 
     service_instance.test_action('invite', params) do
-      expect_info
+      expect_info message: "Inviting User"
     end
   end
 end

@@ -18,7 +18,7 @@ Factor::Connector.service 'slack_channel' do
       text:    text
     }
 
-    info "Posting message `#{text}` to channel #{channel}"
+    info "Posting Message"
     begin
       uri          = 'https://slack.com/api/chat.postMessage'
       raw_response = RestClient.post(uri, payload)
@@ -49,7 +49,7 @@ Factor::Connector.service 'slack_channel' do
       content: content
     }
 
-    info "Uploading File `#{file}` to channel #{channel}"
+    info "Uploading File"
     begin
       uri          = 'https://slack.com/api/files.upload'
       raw_response = RestClient.post(uri, body)
@@ -79,7 +79,7 @@ Factor::Connector.service 'slack_channel' do
       user:    user
     }
 
-    info "Inviting #{user} to group #{channel}"
+    info "Inviting User"
     begin
       uri          = 'https://slack.com/api/channels.invite'
       raw_response = RestClient.post(uri, payload)
