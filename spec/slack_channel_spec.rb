@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-token = ENV['token']
-
 describe 'slack' do
   it 'can send a message' do
+
+    token = ENV['SLACK_TOKEN']
 
     service_instance = service_instance('slack_channel')
 
@@ -20,6 +20,9 @@ describe 'slack' do
 
   it 'can upload a file' do
 
+    token = ENV['SLACK_TOKEN']
+    file = ENV['SLACK_FILE']
+
     service_instance = service_instance('slack_channel')
 
     params = {
@@ -35,6 +38,8 @@ describe 'slack' do
   end
 
   it 'can invite a user' do
+
+    token = ENV['SLACK_TOKEN']
 
     service_instance = service_instance('slack_channel')
 
