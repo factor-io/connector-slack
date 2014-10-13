@@ -9,11 +9,10 @@ Gem::Specification.new do |s|
   s.email         = ['andrewrdakers@gmail.com']
   s.homepage      = 'https://factor.io'
   s.summary       = 'Slack Factor.io Connector'
-  s.files         = ['lib/factor/connector/slack.rb']
-
+  s.files         = DIR.glob('lib/factor/connector/*.rb')
   s.require_paths = ['lib']
 
-  s.add_runtime_dependency 'factor-connector-api', '~> 0.0.9'
+  s.add_runtime_dependency 'factor-connector-api', '~> 0.0.10'
 
   s.add_development_dependency 'codeclimate-test-reporter', '~> 0.3.0'
   s.add_development_dependency 'rspec', '~> 3.1.0'

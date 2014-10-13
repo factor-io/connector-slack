@@ -18,7 +18,7 @@ Factor::Connector.service 'slack_channel' do
       text:    text
     }
 
-    info "Posting message `#{text}` to channel #{channel}"
+    info "Posting Message"
     begin
       uri          = 'https://slack.com/api/chat.postMessage'
       raw_response = RestClient.post(uri, payload)
@@ -49,7 +49,7 @@ Factor::Connector.service 'slack_channel' do
       content: content
     }
 
-    info "Uploading File `#{file}` to channel #{channel}"
+    info "Uploading File"
     begin
       uri          = 'https://slack.com/api/files.upload'
       raw_response = RestClient.post(uri, body)
@@ -59,6 +59,66 @@ Factor::Connector.service 'slack_channel' do
     end
 
     fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    action_callback response
+  end
+
+  action "invite" do |params|
+
+    token   = params['token']
+    channel = params['channel']
+    user    = params['user']
+
+    fail 'Token is required' unless token
+    fail 'Channel is required' unless channel
+    fail 'Username is required' unless user
+
+    payload = {
+      token:   token,
+      channel: channel,
+      user:    user
+    }
+
+    info "Inviting User"
+    begin
+      uri          = 'https://slack.com/api/channels.invite'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to invite user'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    action_callback response
+  end
+
+  action "topic" do |params|
+
+    token   = params['token']
+    channel = params['channel']
+    topic   = params['topic']
+
+    fail 'Token is required' unless token
+    fail 'Channel is required' unless channel
+    fail 'Topic is required' unless topic
+
+    payload = {
+      token: token,
+      channel: channel,
+      topic: topic
+    }
+
+    info "Setting Topic"
+    begin
+      uri = 'https://slack.com/api/channels.setTopic'
+      raw_reponse = RestClient.post(uri, payload)
+      response = JSON.parse(raw_reponse)
+    rescue
+      fail 'Unable to set topic'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless reponse['ok']
 
     action_callback response
   end
