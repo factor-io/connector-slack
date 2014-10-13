@@ -17,7 +17,7 @@ describe 'slack' do
     end
   end
 
-    it 'Invite a user to a private group' do
+  it 'Invite a user to a private group' do
 
     token   = ENV['SLACK_TOKEN']
     channel = ENV['SLACK_CHANNEL']
