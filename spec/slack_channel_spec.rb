@@ -55,4 +55,21 @@ describe 'slack' do
       expect_info message: "Inviting User"
     end
   end
+
+  it 'can set channel topic' do
+
+    token   = ENV['SLACK_TOKEN']
+
+    service_instance = service_instance('slack_channel')
+
+    params = {
+      'token'   => token,
+      'channel' => '#general',
+      'topic'   => 'We have saved the whales'
+    }
+
+    service_instance.test_action('topic', params) do
+      expect_info message: "Setting Topic"
+    end
+  end
 end
