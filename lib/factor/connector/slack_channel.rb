@@ -65,7 +65,7 @@ Factor::Connector.service 'slack_channel' do
 
   action "invite" do |params|
 
-    token      = params['token']
+    token   = params['token']
     channel = params['channel']
     user    = params['user']
 

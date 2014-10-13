@@ -21,19 +21,21 @@ describe 'slack' do
   it 'can upload a file' do
 
     token = ENV['SLACK_TOKEN']
-    file = ENV['SLACK_FILE']
+    file = Tempfile.new('foo')
+    content = file.read
 
     service_instance = service_instance('slack_channel')
 
     params = {
       'token' => token,
       'channel' => '#general',
-      'file' => 'file.txt',
-      'content' => 'thingandstuff'
+      'file' => file,
+      'content' => content
     }
 
     service_instance.test_action('upload', params) do
       expect_info
+      file.unlink
     end
   end
 
