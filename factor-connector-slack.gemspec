@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email         = ['andrewrdakers@gmail.com']
   s.homepage      = 'https://factor.io'
   s.summary       = 'Slack Factor.io Connector'
-  s.files         = DIR.glob('lib/factor/connector/*.rb')
+  s.files         = Dir['lib/factor/connector/*.rb']
   s.require_paths = ['lib']
 
   s.add_runtime_dependency 'factor-connector-api', '~> 0.0.10'
