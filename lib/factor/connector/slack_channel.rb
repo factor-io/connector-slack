@@ -2,29 +2,6 @@ require 'factor-connector-api'
 require 'rest_client'
 
 Factor::Connector.service 'slack_channel' do
-def getting_channels(token)
-      token = params['token']
-
-    fail 'Token is required' unless token
-
-    payload = {
-      token: token
-    }
-
-    info "Getting Channels"
-    begin
-      uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient.post(uri, payload)
-      response     = JSON.parse(raw_response)
-    rescue
-      fail 'Unable to get channels'
-    end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
-
-    action_callback response
-  end
-
   action "list" do |params|
 
     token = params['token']
@@ -35,7 +12,7 @@ def getting_channels(token)
       token: token
     }
 
-    info "Getting Channels"
+    info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
       raw_response = RestClient.post(uri, payload)
@@ -62,7 +39,7 @@ def getting_channels(token)
       token: token
     }
 
-    info "Getting Channels"
+    info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
       raw_response = RestClient.post(uri, payload)
@@ -128,7 +105,7 @@ def getting_channels(token)
       token: token
     }
 
-    info "Getting Channels"
+    info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
       raw_response = RestClient.post(uri, payload)
@@ -178,7 +155,7 @@ def getting_channels(token)
       token: token
     }
 
-    info "Getting Channels"
+    info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
       raw_response = RestClient.post(uri, payload)
