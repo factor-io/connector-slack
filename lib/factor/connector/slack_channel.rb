@@ -2,8 +2,54 @@ require 'factor-connector-api'
 require 'rest_client'
 
 Factor::Connector.service 'slack_channel' do
-  action "invite" do |params|
+def getting_channels(token)
+      token = params['token']
 
+    fail 'Token is required' unless token
+
+    payload = {
+      token: token
+    }
+
+    info "Getting Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to get channels'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    action_callback response
+  end
+
+  action "list" do |params|
+
+    token = params['token']
+
+    fail 'Token is required' unless token
+
+    payload = {
+      token: token
+    }
+
+    info "Getting Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to get channels'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    action_callback response
+  end
+
+  action "invite" do |params|
     token   = params['token']
     channel = params['channel']
     user    = params['user']
@@ -29,13 +75,9 @@ Factor::Connector.service 'slack_channel' do
 
     response['channels'].each do |n|
       if n['name'] == channel
-        user = n['id']
+        channel = n['id']
       end
     end
-
-    payload = {
-      token: token
-    }
 
     info "Getting Users"
     begin
@@ -83,6 +125,27 @@ Factor::Connector.service 'slack_channel' do
     fail 'Channel is required' unless channel
 
     payload = {
+      token: token
+    }
+
+    info "Getting Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to get channels'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    response['channels'].each do |n|
+      if n['name'] == channel
+        channel = n['id']
+      end
+    end
+
+    payload = {
       token: token,
       channel: channel,
     }
@@ -110,6 +173,27 @@ Factor::Connector.service 'slack_channel' do
     fail 'Token is required' unless token
     fail 'Channel is required' unless channel
     fail 'Topic is required' unless topic
+
+    payload = {
+      token: token
+    }
+
+    info "Getting Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to get channels'
+    end
+
+    fail "Error from Slack API: #{response['error']}" unless response['ok']
+
+    response['channels'].each do |n|
+      if n['name'] == channel
+        channel = n['id']
+      end
+    end
 
     payload = {
       token: token,
