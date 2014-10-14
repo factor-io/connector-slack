@@ -17,7 +17,7 @@ describe 'slack' do
       'text' => @text
     }
     service_instance.test_action('send', params) do
-      expect_info message: "Posting Message"
+      expect_return
     end
   end
 end

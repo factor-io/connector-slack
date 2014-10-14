@@ -18,10 +18,8 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to get channels'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     action_callback response
   end
@@ -45,10 +43,8 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to get channels'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -62,10 +58,8 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to get users'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     response['members'].each do |n|
       if n['name'] == user
@@ -79,16 +73,14 @@ Factor::Connector.service 'slack_channel' do
       user:    user
     }
 
-    info "Inviting User"
+    info "Inviting #{user} to #{channel}"
     begin
       uri          = 'https://slack.com/api/channels.invite'
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to invite user'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     action_callback response
   end
@@ -111,10 +103,8 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to get channels'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -127,16 +117,14 @@ Factor::Connector.service 'slack_channel' do
       channel: channel,
     }
 
-    info "Getting History"
+    info "Getting History for #{channel}"
     begin
       uri = 'https://slack.com/api/channels.history'
       raw_reponse = RestClient.post(uri, payload)
       response = JSON.parse(raw_reponse)
     rescue
-      fail 'Unable to see history'
+      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless reponse['ok']
 
     action_callback response
   end
@@ -161,10 +149,8 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to get channels'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -184,10 +170,8 @@ Factor::Connector.service 'slack_channel' do
       raw_reponse = RestClient.post(uri, payload)
       response = JSON.parse(raw_reponse)
     rescue
-      fail 'Unable to set topic'
+      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless reponse['ok']
 
     action_callback response
   end

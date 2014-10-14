@@ -32,7 +32,7 @@ describe 'slack' do
       'name' => @name
     }
     service_instance.test_action('create', params) do
-      expect_info message: "Creating Group"
+      expect_return
     end
   end
 
@@ -44,7 +44,7 @@ describe 'slack' do
       'user' => @user
     }
     service_instance.test_action('invite', params) do
-      expect_info message: "Inviting User"
+      expect_return
     end
   end
 end

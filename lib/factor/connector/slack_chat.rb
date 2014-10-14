@@ -24,10 +24,8 @@ Factor::Connector.service 'slack_chat' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to deliver your message'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     action_callback response
   end

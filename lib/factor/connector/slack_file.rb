@@ -23,12 +23,10 @@ Factor::Connector.service 'slack_file' do
     begin
       uri          = 'https://slack.com/api/files.upload'
       raw_response = RestClient.post(uri, body)
-      reponse      = JSON.parse(raw_response)
+      response      = JSON.parse(raw_response)
     rescue
-      fail 'Unable to upload you file'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     action_callback response
   end

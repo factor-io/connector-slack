@@ -17,7 +17,7 @@ describe 'slack' do
       'user' => @user
     }
     service_instance.test_action('invite', params) do
-      expect_info message: "Inviting User"
+      expect_return
     end
   end
 
@@ -27,7 +27,7 @@ describe 'slack' do
       'token' => @token
     }
     service_instance.test_action('list', params) do
-      expect_info message: "Getting Channels"
+      expect_return
     end
   end
 
@@ -38,7 +38,7 @@ describe 'slack' do
       'channel' => @channel,
     }
     service_instance.test_action('history', params) do
-      expect_info message: "Getting History"
+      expect_return
     end
   end
 
@@ -50,7 +50,7 @@ describe 'slack' do
       'topic'   => @text
     }
     service_instance.test_action('topic', params) do
-      expect_info message: "Setting Topic"
+      expect_return
     end
   end
 end
