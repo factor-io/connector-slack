@@ -26,29 +26,23 @@ describe 'slack' do
   end
 
   it 'can create a private group' do
-
     service_instance = service_instance('slack_group')
-
     params = {
       'token' => @token,
       'name' => @name
     }
-
     service_instance.test_action('create', params) do
       expect_info message: "Creating Group"
     end
   end
 
   it 'Invite a user to a private group' do
-
     service_instance = service_instance('slack_group')
-
     params = {
       'token' => @token,
       'channel' => @group,
       'user' => @user
     }
-
     service_instance.test_action('invite', params) do
       expect_info message: "Inviting User"
     end
