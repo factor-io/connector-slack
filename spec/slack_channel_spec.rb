@@ -1,41 +1,56 @@
 require 'spec_helper'
 
 describe 'slack' do
-  it 'can send a message' do
 
-    token = ENV['token']
+  before(:all) do
+    @token = ENV['SLACK_TOKEN']
+    @channel = ENV['SLACK_CHANNEL']
+    @text = ENV['SLACK_TEXT']
+    @user = ENV['SLACK_USER']
+  end
 
+  it 'can invite a user' do
     service_instance = service_instance('slack_channel')
-
     params = {
-      'token' => token,
-      'channel' => '#general',
-      'text' => 'whatup'
+      'token' => @token,
+      'channel' => @channel,
+      'user' => @user
     }
-
-    service_instance.test_action('send', params) do
-      expect_info
+    service_instance.test_action('invite', params) do
+      expect_return
     end
   end
 
-  it 'can upload a file' do
-
-    token = ENV['token']
-    file = ENV['file']
-    channel = ENV['channel']
-    content = File.open(file, 'rb').read
-
+  it 'can list all channels' do
     service_instance = service_instance('slack_channel')
-
     params = {
-      'token' => token,
-      'channel' => channel,
-      'file' => file,
-      'content' => content
+      'token' => @token
     }
+    service_instance.test_action('list', params) do
+      expect_return
+    end
+  end
 
-    service_instance.test_action('upload', params) do
-      expect_info
+    it 'can see history of channel' do
+    service_instance = service_instance('slack_channel')
+    params = {
+      'token'   => @token,
+      'channel' => @channel,
+    }
+    service_instance.test_action('history', params) do
+      expect_return
+    end
+  end
+
+  it 'can set channel topic' do
+    service_instance = service_instance('slack_channel')
+    params = {
+      'token'   => @token,
+      'channel' => @channel,
+      'topic'   => @text
+    }
+    service_instance.test_action('topic', params) do
+      expect_return
     end
   end
 end

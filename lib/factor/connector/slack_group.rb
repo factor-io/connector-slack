@@ -8,20 +8,48 @@ Factor::Connector.service 'slack_group' do
     name  = params['name']
 
     fail 'Token is required' unless token
-    fail 'Name is required' unless name
+    fail 'Name required' unless name
 
     payload = {
       token: token,
-      name:  "thing",
+      name:  name,
     }
 
-    info "Creating group `#{name}`"
+    info "Creating Group"
     begin
       uri          = 'https://slack.com/api/groups.create'
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to create group'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
+    end
+
+    action_callback response
+  end
+
+  action "invite" do |params|
+
+    token      = params['token']
+    channel    = params['channel']
+    user       = params['user']
+
+    fail 'Token is required' unless token
+    fail 'Channel is required' unless channel
+    fail 'Username is required' unless user
+
+    payload = {
+      token:   token,
+      channel: channel,
+      user:    user
+    }
+
+    info "Inviting User"
+    begin
+      uri          = 'https://slack.com/api/groups.invite'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail 'Unable to invite user'
     end
 
     fail "Error from Slack API: #{response['error']}" unless response['ok']

@@ -2,63 +2,176 @@ require 'factor-connector-api'
 require 'rest_client'
 
 Factor::Connector.service 'slack_channel' do
-  action "send" do |params|
+  action "list" do |params|
 
-    token   = params['token']
-    channel = params['channel']
-    text    = params['text']
+    token = params['token']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
-    fail 'Text is required' unless text
 
     payload = {
-      token:   token,
-      channel: channel,
-      text:    text
+      token: token
     }
 
-    info "Posting message `#{text}` to channel #{channel}"
+    info "Getting all Channels"
     begin
-      uri          = 'https://slack.com/api/chat.postMessage'
+      uri          = 'https://slack.com/api/channels.list'
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to deliver your message'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
-
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
 
     action_callback response
   end
 
-  action "upload" do |params|
+  action "invite" do |params|
     token   = params['token']
     channel = params['channel']
-    file    = params['file']
-    content = params['content'] || File.open(file, 'rb').read
+    user    = params['user']
 
     fail 'Token is required' unless token
     fail 'Channel is required' unless channel
-    fail 'File is required' unless file
+    fail 'Username is required' unless user
 
-    body = {
-      token:   token,
-      channel: channel,
-      file:    file,
-      content: content
+    payload = {
+      token: token
     }
 
-    info "Uploading File `#{file}` to channel #{channel}"
+    info "Getting all Channels"
     begin
-      uri          = 'https://slack.com/api/files.upload'
-      raw_response = RestClient.post(uri, body)
-      reponse      = JSON.parse(raw_response)
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
     rescue
-      fail 'Unable to upload you file'
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
     end
 
-    fail "Error from Slack API: #{response['error']}" unless response['ok']
+    response['channels'].each do |n|
+      if n['name'] == channel
+        channel = n['id']
+      end
+    end
+
+    info "Getting Users"
+    begin
+      uri          = 'https://slack.com/api/users.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
+    end
+
+    response['members'].each do |n|
+      if n['name'] == user
+        user = n['id']
+      end
+    end
+
+    payload = {
+      token:   token,
+      channel: channel,
+      user:    user
+    }
+
+    info "Inviting #{user} to #{channel}"
+    begin
+      uri          = 'https://slack.com/api/channels.invite'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
+    end
+
+    action_callback response
+  end
+
+  action "history" do |params|
+
+    token   = params['token']
+    channel = params['channel']
+
+    fail 'Token is required' unless token
+    fail 'Channel is required' unless channel
+
+    payload = {
+      token: token
+    }
+
+    info "Getting all Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
+    end
+
+    response['channels'].each do |n|
+      if n['name'] == channel
+        channel = n['id']
+      end
+    end
+
+    payload = {
+      token: token,
+      channel: channel,
+    }
+
+    info "Getting History for #{channel}"
+    begin
+      uri = 'https://slack.com/api/channels.history'
+      raw_reponse = RestClient.post(uri, payload)
+      response = JSON.parse(raw_reponse)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
+    end
+
+    action_callback response
+  end
+
+  action "topic" do |params|
+
+    token   = params['token']
+    channel = params['channel']
+    topic   = params['topic']
+
+    fail 'Token is required' unless token
+    fail 'Channel is required' unless channel
+    fail 'Topic is required' unless topic
+
+    payload = {
+      token: token
+    }
+
+    info "Getting all Channels"
+    begin
+      uri          = 'https://slack.com/api/channels.list'
+      raw_response = RestClient.post(uri, payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless response['ok']
+    end
+
+    response['channels'].each do |n|
+      if n['name'] == channel
+        channel = n['id']
+      end
+    end
+
+    payload = {
+      token: token,
+      channel: channel,
+      topic: topic
+    }
+
+    info "Setting Topic"
+    begin
+      uri = 'https://slack.com/api/channels.setTopic'
+      raw_reponse = RestClient.post(uri, payload)
+      response = JSON.parse(raw_reponse)
+    rescue
+      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
+    end
 
     action_callback response
   end
