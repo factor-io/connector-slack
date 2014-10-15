@@ -18,7 +18,7 @@ Factor::Connector.service 'slack_group' do
     info "Creating Group"
     begin
       uri          = 'https://slack.com/api/groups.create'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -48,7 +48,7 @@ Factor::Connector.service 'slack_group' do
     info "Inviting User"
     begin
       uri          = 'https://slack.com/api/groups.invite'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"

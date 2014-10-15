@@ -21,7 +21,7 @@ Factor::Connector.service 'slack_chat' do
     info "Posting Message"
     begin
       uri          = 'https://slack.com/api/chat.postMessage'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"

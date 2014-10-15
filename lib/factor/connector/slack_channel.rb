@@ -15,7 +15,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -42,7 +42,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -59,7 +59,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting Users"
     begin
       uri          = 'https://slack.com/api/users.list'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -82,7 +82,7 @@ Factor::Connector.service 'slack_channel' do
     info "Inviting #{user} to #{channel}"
     begin
       uri          = 'https://slack.com/api/channels.invite'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -108,7 +108,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -130,7 +130,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting History for #{channel}"
     begin
       uri = 'https://slack.com/api/channels.history'
-      raw_reponse = RestClient.post(uri, payload)
+      raw_reponse = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response = JSON.parse(raw_reponse)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -158,7 +158,7 @@ Factor::Connector.service 'slack_channel' do
     info "Getting all Channels"
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient.post(uri, payload)
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
       fail "Failed to connect to Slack API, check your credentials"
@@ -181,7 +181,7 @@ Factor::Connector.service 'slack_channel' do
     info "Setting Topic"
     begin
       uri = 'https://slack.com/api/channels.setTopic'
-      raw_reponse = RestClient.post(uri, payload)
+      raw_reponse = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response = JSON.parse(raw_reponse)
     rescue
       fail "Failed to connect to Slack API, check your credentials"

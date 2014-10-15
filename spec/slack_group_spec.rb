@@ -12,7 +12,7 @@ describe 'slack' do
       token: @token,
       name: @name
     }
-    raw_response = RestClient.post(uri, payload)
+    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
   end
 
   after(:each) do
@@ -22,7 +22,7 @@ describe 'slack' do
       channel: @group,
       user: @user
     }
-    raw_response = RestClient.post(uri, payload)
+    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
   end
 
   it 'can create a private group' do
