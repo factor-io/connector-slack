@@ -13,7 +13,7 @@ describe 'slack' do
       service_instance = service_instance('slack_chat')
       params = {
         'token' => @token,
-        'channel' => '#general',
+        'channel' => @channel,
         'text' => @text
       }
       service_instance.test_action('send', params) do

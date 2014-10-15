@@ -5,9 +5,16 @@ describe 'slack' do
   before(:each) do
     @token = ENV['SLACK_TOKEN']
     @user = ENV['SLACK_USER']
-    @group = ENV['SLACK_GROUP']
-    @name = Random.new_seed.to_s
+    @seed = Random.new(1234)
+    @group = 'text-' + Random.rand(9999).to_s
+    @name = 'text-' + Random.rand(9999).to_s
     uri = 'https://slack.com/api/groups.create'
+    payload = {
+      token: @token,
+      name: @group
+    }
+    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+    response = JSON.parse(raw_response)
   end
 
   after(:each) do

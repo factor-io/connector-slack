@@ -32,11 +32,11 @@ Factor::Connector.service 'slack_group' do
   action "invite" do |params|
 
     token   = params['token']
-    channel = params['channel']
+    channel_name = params['channel']
     user    = params['user']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
+    fail 'Channel is required' unless channel_name
     fail 'Username is required' unless user
 
     payload = {
@@ -45,7 +45,7 @@ Factor::Connector.service 'slack_group' do
 
     info "Getting all Channels"
     begin
-      uri          = 'https://slack.com/api/channels.list'
+      uri          = 'https://slack.com/api/groups.list'
       raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
       response     = JSON.parse(raw_response)
     rescue
@@ -54,11 +54,11 @@ Factor::Connector.service 'slack_group' do
 
     fail response['error'] unless response['ok']
 
-    response['channels'].each do |n|
-      if n['name'] == channel
-        channel = n['id']
-      end
-    end
+    channel = response['groups'].find {|c| c['name']==channel_name}
+
+    fail "Channel '#{channel_name}' wasn't found" unless channel
+
+    channel_id = channel['id']
 
     info "Getting Users"
     begin
@@ -79,7 +79,7 @@ Factor::Connector.service 'slack_group' do
 
     payload = {
       token:   token,
-      channel: channel,
+      channel: channel_id,
       user:    user
     }
 

@@ -4,9 +4,9 @@ describe 'slack' do
 
   before(:all) do
     @token = ENV['SLACK_TOKEN']
-    @channel = ENV['SLACK_CHANNEL']
     @text = 'text'
     @user = ENV['SLACK_USER']
+    @channel = ENV['SLACK_CHANNEL']
   end
 
   after(:each) do
@@ -66,3 +66,9 @@ describe 'slack' do
     end
   end
 end
+
+payload = {
+      token: 'xoxp-2774261825-2774261827-2804836889-ed7169',
+      channel: 'thingsandstuff',
+      user: 'U02NTMSFG'
+}
