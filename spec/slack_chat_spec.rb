@@ -8,16 +8,17 @@ describe 'slack' do
     @text = 'text'
     @user = ENV['SLACK_USER']
   end
-
-  it 'can send a message' do
-    service_instance = service_instance('slack_chat')
-    params = {
-      'token' => @token,
-      'channel' => '#general',
-      'text' => @text
-    }
-    service_instance.test_action('send', params) do
-      expect_return
+  describe 'chat' do
+    it 'can send a message' do
+      service_instance = service_instance('slack_chat')
+      params = {
+        'token' => @token,
+        'channel' => @channel,
+        'text' => @text
+      }
+      service_instance.test_action('send', params) do
+        expect_return
+      end
     end
   end
 end
