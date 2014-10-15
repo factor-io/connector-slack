@@ -9,48 +9,60 @@ describe 'slack' do
     @user = ENV['SLACK_USER']
   end
 
-  it 'can invite a user' do
-    service_instance = service_instance('slack_channel')
-    params = {
-      'token' => @token,
-      'channel' => @channel,
-      'user' => @user
+  after(:each) do
+    uri = 'https://slack.com/api/channels.kick'
+    payload = {
+      token: @token,
+      channel: @channel,
+      user: @user
     }
-    service_instance.test_action('invite', params) do
-      expect_return
-    end
+    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
   end
 
-  it 'can list all channels' do
-    service_instance = service_instance('slack_channel')
-    params = {
-      'token' => @token
-    }
-    service_instance.test_action('list', params) do
-      expect_return
+  describe 'channel' do
+    it 'can invite a user' do
+      service_instance = service_instance('slack_channel')
+      params = {
+        'token' => @token,
+        'channel' => @channel,
+        'user' => @user
+      }
+      service_instance.test_action('invite', params) do
+        expect_return
+      end
     end
-  end
 
-    it 'can see history of channel' do
-    service_instance = service_instance('slack_channel')
-    params = {
-      'token'   => @token,
-      'channel' => @channel,
-    }
-    service_instance.test_action('history', params) do
-      expect_return
+    it 'can list all channels' do
+      service_instance = service_instance('slack_channel')
+      params = {
+        'token' => @token
+      }
+      service_instance.test_action('list', params) do
+        expect_return
+      end
     end
-  end
 
-  it 'can set channel topic' do
-    service_instance = service_instance('slack_channel')
-    params = {
-      'token'   => @token,
-      'channel' => @channel,
-      'topic'   => @text
-    }
-    service_instance.test_action('topic', params) do
-      expect_return
+      it 'can see history of channel' do
+      service_instance = service_instance('slack_channel')
+      params = {
+        'token'   => @token,
+        'channel' => @channel,
+      }
+      service_instance.test_action('history', params) do
+        expect_return
+      end
+    end
+
+    it 'can set channel topic' do
+      service_instance = service_instance('slack_channel')
+      params = {
+        'token'   => @token,
+        'channel' => @channel,
+        'topic'   => @text
+      }
+      service_instance.test_action('topic', params) do
+        expect_return
+      end
     end
   end
 end
