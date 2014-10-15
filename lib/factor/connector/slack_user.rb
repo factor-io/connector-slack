@@ -18,8 +18,10 @@ Factor::Connector.service 'slack_user' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     action_callback response
   end

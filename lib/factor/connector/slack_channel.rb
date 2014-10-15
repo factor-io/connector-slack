@@ -18,8 +18,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     action_callback response
   end
@@ -43,8 +45,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -58,8 +62,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     response['members'].each do |n|
       if n['name'] == user
@@ -79,8 +85,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     action_callback response
   end
@@ -103,8 +111,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -123,8 +133,10 @@ Factor::Connector.service 'slack_channel' do
       raw_reponse = RestClient.post(uri, payload)
       response = JSON.parse(raw_reponse)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     action_callback response
   end
@@ -149,8 +161,10 @@ Factor::Connector.service 'slack_channel' do
       raw_response = RestClient.post(uri, payload)
       response     = JSON.parse(raw_response)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless response['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     response['channels'].each do |n|
       if n['name'] == channel
@@ -170,8 +184,10 @@ Factor::Connector.service 'slack_channel' do
       raw_reponse = RestClient.post(uri, payload)
       response = JSON.parse(raw_reponse)
     rescue
-      fail "Error from Slack API: #{response['error']}" unless reponse['ok']
+      fail "Failed to connect to Slack API, check your credentials"
     end
+
+    fail response['error'] unless response['ok']
 
     action_callback response
   end
