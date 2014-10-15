@@ -5,9 +5,9 @@ describe 'slack' do
   before(:each) do
     @token = ENV['SLACK_TOKEN']
     @channel = ENV['SLACK_CHANNEL']
-    @new_file = Tempfile.new(ENV['SLACK_TEXT'])
+    @new_file = Tempfile.new('text')
     @file = @new_file.path
-    @content = ENV['SLACK_TEXT']
+    @content = 'text'
   end
 
   after(:each) do

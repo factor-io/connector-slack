@@ -5,7 +5,7 @@ describe 'slack' do
   before(:all) do
     @token = ENV['SLACK_TOKEN']
     @channel = ENV['SLACK_CHANNEL']
-    @text = ENV['SLACK_TEXT']
+    @text = 'text'
     @user = ENV['SLACK_USER']
   end
 
