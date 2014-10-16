@@ -19,21 +19,21 @@ To use the actions defined well need to generate a [Token](https://api.slack.com
     end
 
 ## Functionality
-#### slack_channel
-list - list all channels
-invite - invite a user to your channel
-history - see the history
-topic - set the topic
+##### slack_channel
+list - list all channels<br>
+invite - invite a user to your channel<br>
+history - see the history<br>
+topic - set the topic<br>
 
-#### slack_chat
-send - send a message
+##### slack_chat
+send - send a message<br>
 
-#### slack group
-create - create a group
-invite - invite a user to your private group
+##### slack group
+create - create a group<br>
+invite - invite a user to your private group<br>
 
-#### slack_user
-list - list all users
+##### slack_user
+list - list all users<br>
 
 ## Testing
 To run tests locally we need to clone the repo, set the env variables that are referred to below. Then, we run rake in our terminal. Currently we need to set our env's to the ID's. We can set our env's in our terminal:
@@ -42,13 +42,13 @@ To run tests locally we need to clone the repo, set the env variables that are r
     $ export SLACK_CHANNEL=133743732
     $ export SLACK_USER=563252338
 
-## ENV['SLACK_TOKEN']
+#### ENV['SLACK_TOKEN']
 You can find your [Token](https://api.slack.com/) there.
 
-## ENV['SLACK_CHANNEL']
+#### ENV['SLACK_CHANNEL']
 And, you [Channel](https://api.slack.com/methods/channels.list/test) options there. Just pick a channel id after you click go.
 
-## ENV['SLACK_USER']
+#### ENV['SLACK_USER']
 For your user you'll want to create a test user account, and then grab the [User](https://api.slack.com/methods/users.list/test) id here.
 
 Then, you can bundle and test:
