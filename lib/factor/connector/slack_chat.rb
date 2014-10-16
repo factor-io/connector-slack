@@ -5,16 +5,37 @@ Factor::Connector.service 'slack_chat' do
   action "send" do |params|
 
     token   = params['token']
-    channel = params['channel']
+    channel_name = params['channel']
     text    = params['text']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
+    fail 'Channel is required' unless channel_name
     fail 'Text is required' unless text
 
     payload = {
+      token: token
+    }
+
+    info "Getting all Channels"
+    begin
+      uri          = 'https://slack.com/api/groups.list'
+      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      response     = JSON.parse(raw_response)
+    rescue
+      fail "Failed to connect to Slack API, check your credentials"
+    end
+
+    fail response['error'] unless response['ok']
+
+    channel = response['groups'].find {|c| c['name'] || c['id'] == channel_name}
+
+    fail "Channel '#{channel_name}' wasn't found" unless channel
+
+    channel_id = channel['id']
+
+    payload = {
       token:   token,
-      channel: channel,
+      channel: channel_id,
       text:    text
     }
 
