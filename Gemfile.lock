@@ -18,7 +18,7 @@ GEM
       celluloid (~> 0.16.0)
     hitimes (1.2.2)
     multi_json (1.10.1)
-    netrc (0.7.7)
+    netrc (0.7.9)
     predicated (0.2.6)
     rake (10.3.2)
     rest_client (1.7.3)
