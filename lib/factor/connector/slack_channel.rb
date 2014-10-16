@@ -88,7 +88,7 @@ Factor::Connector.service 'slack_channel' do
       fail "Failed to connect to Slack API, check your credentials"
     end
 
-    fail response['error'] unless response['ok']
+    warn response['error'] unless response['ok']
 
     action_callback response
   end
