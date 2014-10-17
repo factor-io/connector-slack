@@ -13,7 +13,12 @@ describe 'slack' do
       token: @token,
       name: @group
     }
-    RestClient::Request.execute(url: uri, method: 'POST', ssl_version: 'SSLv23', payload: payload)
+    RestClient::Request.execute(
+                        url: uri,
+                        method: 'POST',
+                        ssl_version: 'SSLv23',
+                        payload: payload
+                        )
   end
 
   after(:each) do
@@ -23,7 +28,12 @@ describe 'slack' do
       channel: @group,
       user: @user
     }
-    RestClient::Request.execute(url: uri, method: 'POST', ssl_version: 'SSLv23', payload: payload)
+    RestClient::Request.execute(
+                          url: uri,
+                          method: 'POST',
+                          ssl_version: 'SSLv23',
+                          payload: payload
+                          )
   end
 
   describe 'group' do

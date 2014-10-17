@@ -16,7 +16,12 @@ describe 'slack' do
       channel: @channel,
       user: @user
     }
-    RestClient::Request.execute(url: uri, method: 'POST', ssl_version: 'SSLv23', payload: payload)
+    RestClient::Request.execute(
+                          url: uri,
+                          method: 'POST',
+                          ssl_version: 'SSLv23',
+                          payload: payload
+                          )
   end
 
   describe 'channel' do
