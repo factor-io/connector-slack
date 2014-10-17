@@ -2,7 +2,7 @@ require 'factor-connector-api'
 require 'rest_client'
 
 Factor::Connector.service 'slack_channel' do
-  action "list" do |params|
+  action 'list' do |params|
 
     token = params['token']
 
@@ -12,13 +12,18 @@ Factor::Connector.service 'slack_channel' do
       token: token
     }
 
-    info "Getting all Channels"
+    info 'Getting all Channels'
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      raise 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
@@ -26,66 +31,81 @@ Factor::Connector.service 'slack_channel' do
     action_callback response
   end
 
-  action "invite" do |params|
-    token   = params['token']
-    channel = params['channel']
-    user    = params['user']
+  action 'invite' do |params|
+    token        = params['token']
+    channel_name = params['channel']
+    user_name    = params['user']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
-    fail 'Username is required' unless user
+    fail 'Channel is required' unless channel_name
+    fail 'Username is required' unless user_name
 
     payload = {
       token: token
     }
 
-    info "Getting all Channels"
+    info 'Getting all Channels'
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
 
-    response['channels'].each do |n|
-      if n['name'] == channel
-        channel = n['id']
-      end
-    end
+    channel = response['channels'].find { |c| c['name'] || c['id'] == channel_name }
 
-    info "Getting Users"
+    fail "Channel '#{channel_name}' wasn't found" unless channel
+
+    channel_id = channel['id']
+
+    info 'Getting Users'
     begin
       uri          = 'https://slack.com/api/users.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
 
-    response['members'].each do |n|
-      if n['name'] == user
-        user = n['id']
-      end
-    end
+    user = response['members'].find { |m| m['name'] || m['id'] == user_name }
+
+    fail "User '#{user_name}' was not found" unless user
+
+    user_id = user['id']
 
     payload = {
       token:   token,
-      channel: channel,
-      user:    user
+      channel: channel_id,
+      user:    user_id
     }
 
     info "Inviting #{user} to #{channel}"
     begin
       uri          = 'https://slack.com/api/channels.invite'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     warn response['error'] unless response['ok']
@@ -93,47 +113,57 @@ Factor::Connector.service 'slack_channel' do
     action_callback response
   end
 
-  action "history" do |params|
+  action 'history' do |params|
 
-    token   = params['token']
-    channel = params['channel']
+    token        = params['token']
+    channel_name = params['channel']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
+    fail 'Channel is required' unless channel_name
 
     payload = {
       token: token
     }
 
-    info "Getting all Channels"
+    info 'Getting all Channels'
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
 
-    response['channels'].each do |n|
-      if n['name'] == channel
-        channel = n['id']
-      end
-    end
+    channel = response['channels'].find { |c| c['name'] || c['id'] == channel_name }
+
+    fail "Channel '#{channel_name}' wasn't found" unless channel
+
+    channel_id = channel['id']
 
     payload = {
       token: token,
-      channel: channel,
+      channel: channel_id
     }
 
     info "Getting History for #{channel}"
     begin
       uri = 'https://slack.com/api/channels.history'
-      raw_reponse = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
-      response = JSON.parse(raw_reponse)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
+      response = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
@@ -141,50 +171,60 @@ Factor::Connector.service 'slack_channel' do
     action_callback response
   end
 
-  action "topic" do |params|
+  action 'topic' do |params|
 
-    token   = params['token']
-    channel = params['channel']
-    topic   = params['topic']
+    token        = params['token']
+    channel_name = params['channel']
+    topic        = params['topic']
 
     fail 'Token is required' unless token
-    fail 'Channel is required' unless channel
+    fail 'Channel is required' unless channel_name
     fail 'Topic is required' unless topic
 
     payload = {
       token: token
     }
 
-    info "Getting all Channels"
+    info 'Getting all Channels'
     begin
       uri          = 'https://slack.com/api/channels.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
 
-    response['channels'].each do |n|
-      if n['name'] == channel
-        channel = n['id']
-      end
-    end
+    channel = response['channels'].find { |c| c['name'] || c['id'] == channel_name }
+
+    fail "Channel '#{channel_name}' wasn't found" unless channel
+
+    channel_id = channel['id']
 
     payload = {
       token: token,
-      channel: channel,
+      channel: channel_id,
       topic: topic
     }
 
-    info "Setting Topic"
+    info 'Setting Topic'
     begin
       uri = 'https://slack.com/api/channels.setTopic'
-      raw_reponse = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
-      response = JSON.parse(raw_reponse)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
+      response = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
