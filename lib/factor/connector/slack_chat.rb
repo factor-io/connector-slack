@@ -26,7 +26,7 @@ Factor::Connector.service 'slack_chat' do
                                           method: 'POST',
                                           ssl_version: 'SSLv23',
                                           payload: payload
-                                          )
+                                        )
       response     = JSON.parse(raw_response)
     rescue
       fail 'failed to connect to Slack API, check your credentials'
