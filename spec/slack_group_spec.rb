@@ -14,11 +14,11 @@ describe 'slack' do
       name: @group
     }
     RestClient::Request.execute(
-                        url: uri,
-                        method: 'POST',
-                        ssl_version: 'SSLv23',
-                        payload: payload
-                        )
+                          url: uri,
+                          method: 'POST',
+                          ssl_version: 'SSLv23',
+                          payload: payload
+                          )
   end
 
   after(:each) do
