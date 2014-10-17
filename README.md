@@ -15,7 +15,7 @@ The connector-slack ruby gem is used to run actions in Slack. It was built with 
 To use the actions defined well need to generate a [Token](https://api.slack.com/). Scroll down and you'll find it.
 
     listen 'timer::every', minutes:1 do |post_info|
-      run 'slack_chat::send', :token => 'token', :channel => 'channel_name', :text => 'Save the Whales'
+      run 'slack::chat::send', :token => 'token', :channel => 'channel_name', :text => 'Save the Whales'
     end
 
 ## Functionality
