@@ -6,19 +6,24 @@ Factor::Connector.service 'slack_user' do
 
     token = params['token']
 
-    fail "Token is required" unless token
+    fail 'Token is required' unless token
 
     payload = {
       token: token
     }
 
-  info "Listing Users"
+    info 'Listing Users'
     begin
       uri          = 'https://slack.com/api/users.list'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                          )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']
