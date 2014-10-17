@@ -41,13 +41,13 @@ To run tests locally we need to clone the repo, set the env variables that are r
     $ export SLACK_USER=563252338
 
 #### ENV['SLACK_TOKEN']
-You can find your [Token](https://api.slack.com/) there.
+**[Token:](https://api.slack.com/)** Get your token there.
 
 #### ENV['SLACK_CHANNEL']
-And, your [Channel](https://api.slack.com/methods/channels.list/test) options there. Just pick a channel id after you click go.
+**[Channel:](https://api.slack.com/methods/channels.list/test)** Just pick a channel id after you click go.
 
 #### ENV['SLACK_USER']
-For your user you'll want to create a test user account, the get your [User](https://api.slack.com/methods/users.list/test) id here.
+**[User:](https://api.slack.com/methods/users.list/test)** I suggest you create a test account.
 
 Then, you can bundle and test:
 
