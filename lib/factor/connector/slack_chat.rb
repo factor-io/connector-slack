@@ -2,7 +2,7 @@ require 'factor-connector-api'
 require 'rest_client'
 
 Factor::Connector.service 'slack_chat' do
-  action "send" do |params|
+  action 'send' do |params|
 
     token   = params['token']
     channel = params['channel']
@@ -18,13 +18,18 @@ Factor::Connector.service 'slack_chat' do
       text:    text
     }
 
-    info "Posting Message"
+    info 'Posting Message'
     begin
       uri          = 'https://slack.com/api/chat.postMessage'
-      raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+      raw_response = RestClient::Request.execute(
+                                          url: uri,
+                                          method: 'POST',
+                                          ssl_version: 'SSLv23',
+                                          payload: payload
+                                        )
       response     = JSON.parse(raw_response)
     rescue
-      fail "Failed to connect to Slack API, check your credentials"
+      fail 'failed to connect to Slack API, check your credentials'
     end
 
     fail response['error'] unless response['ok']

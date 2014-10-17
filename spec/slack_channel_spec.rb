@@ -16,7 +16,12 @@ describe 'slack' do
       channel: @channel,
       user: @user
     }
-    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
+    RestClient::Request.execute(
+                          url: uri,
+                          method: 'POST',
+                          ssl_version: 'SSLv23',
+                          payload: payload
+                          )
   end
 
   describe 'channel' do
@@ -42,11 +47,11 @@ describe 'slack' do
       end
     end
 
-      it 'can see history of channel' do
+    it 'can see history of channel' do
       service_instance = service_instance('slack_channel')
       params = {
         'token'   => @token,
-        'channel' => @channel,
+        'channel' => @channel
       }
       service_instance.test_action('history', params) do
         expect_return
@@ -66,9 +71,3 @@ describe 'slack' do
     end
   end
 end
-
-payload = {
-      token: 'xoxp-2774261825-2774261827-2804836889-ed7169',
-      channel: 'thingsandstuff',
-      user: 'U02NTMSFG'
-}
