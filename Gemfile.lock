@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    factor-connector-slack (0.0.1)
+    factor-connector-slack (0.0.3)
       factor-connector-api (~> 0.0.13)
-      rest_client
+      rest_client (~> 1.7.3)
 
 GEM
   remote: https://rubygems.org/
@@ -79,5 +79,5 @@ DEPENDENCIES
   factor-connector-slack!
   rake (~> 10.3.2)
   rspec (~> 3.1.0)
-  rubocop
+  rubocop (~> 0.26.1)
   wrong (~> 0.7.1)
