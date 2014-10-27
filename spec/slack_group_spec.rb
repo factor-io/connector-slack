@@ -44,7 +44,8 @@ describe 'slack' do
         'name' => @name
       }
       service_instance.test_action('create', params) do
-        expect_return
+        return_info = expect_return
+        expect(return_info[:payload]).to include('group')
       end
     end
 
@@ -56,7 +57,8 @@ describe 'slack' do
         'user' => @user
       }
       service_instance.test_action('invite', params) do
-        expect_return
+        return_info = expect_return
+        expect(return_info[:payload]).to include('group')
       end
     end
   end

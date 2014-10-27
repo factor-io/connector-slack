@@ -13,7 +13,8 @@ describe 'slack' do
         'token' => @token
       }
       service_instance.test_action('list', params) do
-        expect_return
+        return_info = expect_return
+        expect(return_info[:payload]).to include('members')
       end
     end
   end

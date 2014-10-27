@@ -17,7 +17,8 @@ describe 'slack' do
         'text' => @text
       }
       service_instance.test_action('send', params) do
-        expect_return
+        return_info = expect_return
+        expect(return_info[:payload]).to include('ts')
       end
     end
   end
