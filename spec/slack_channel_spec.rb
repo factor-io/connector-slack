@@ -43,7 +43,11 @@ describe 'slack' do
         'token' => @token
       }
       service_instance.test_action('list', params) do
-        expect_return
+        return_info = expect_return
+        expect(return_info).to be_a(Hash)
+        expect(return_info).to include(:payload)
+        expect(return_info[:payload]).to be_a(Hash)
+        expect(return_info[:payload]).to include('channels')
       end
     end
 
@@ -66,7 +70,7 @@ describe 'slack' do
         'topic'   => @text
       }
       service_instance.test_action('topic', params) do
-        expect_return
+        expect_return[:topic] = @text
       end
     end
   end
