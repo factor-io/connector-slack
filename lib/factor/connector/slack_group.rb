@@ -1,5 +1,5 @@
 require 'factor-connector-api'
-require 'rest_client'
+require 'rest-client'
 
 Factor::Connector.service 'slack_group' do
   action 'create' do |params|
