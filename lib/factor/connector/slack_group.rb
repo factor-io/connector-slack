@@ -33,11 +33,11 @@ Factor::Connector.service 'slack_group' do
 
     token   = params['token']
     channel_name = params['channel']
-    user    = params['user']
+    user_name    = params['user']
 
     fail 'Token is required' unless token
     fail 'Channel is required' unless channel_name
-    fail 'Username is required' unless user
+    fail 'Username is required' unless user_name
 
     payload = {
       token: token
@@ -71,16 +71,16 @@ Factor::Connector.service 'slack_group' do
 
     fail response['error'] unless response['ok']
 
-    response['members'].each do |n|
-      if n['name'] == user
-        user = n['id']
-      end
-    end
+    user = response['members'].find { |user| user['name'] || user['id'] == user_name }
+
+    fail "User '#{user_name}' was not found" unless user
+
+    user_id = user['id']
 
     payload = {
       token:   token,
       channel: channel_id,
-      user:    user
+      user:    user_id
     }
 
     info "Inviting User"
