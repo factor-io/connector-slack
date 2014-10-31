@@ -3,7 +3,7 @@ $LOAD_PATH.push File.expand_path('../lib', __FILE__)
 
 Gem::Specification.new do |s|
   s.name          = 'factor-connector-slack'
-  s.version       = '0.0.3'
+  s.version       = '0.0.4'
   s.platform      = Gem::Platform::RUBY
   s.authors       = ['Andrew Akers']
   s.email         = ['andrewrdakers@gmail.com']
