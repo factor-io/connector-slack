@@ -1,6 +1,5 @@
 require 'codeclimate-test-reporter'
 require 'rspec'
-require 'wrong'
 require 'factor-connector-api/test'
 
 CodeClimate::TestReporter.start if ENV['CODECLIMATE_REPO_TOKEN']
