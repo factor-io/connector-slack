@@ -8,3 +8,10 @@ env:
   - secure: Y7WRzOI51yoHftG/f9tbS2J4hYf+feAV9aUm7jpf2VaZ4KHhq1PuyFvUt3nQdV+kvE9ZMx0oejQeyNCaX6XgZrCI3oGgD4kUZeKPit22/W/cC4Yw36B/+/VQeWgJ9faoraiJN2U/PcObQQkB1euZZqvEPgReUhWCVBoNVVzjodg=
   - secure: GKYHjoztDOARiIP9/reSNJTeSfNzCqFN7Au+MgYfKBMQBMSvBf5i5mx50d/rbJLBGfauhvWtCiO68HNlhQoMthFonkwOgVHyRh1ItvDr1Q2HIv1g5qgiVszfnMRgXdiIZSVDq6E3z/4mdzcEtU02sMzoTvXBWaLPHRUObkwaQnc=
   - secure: ZvKIfVijQ4Ljs9hKw56CYb5orawAMva0tdlMHBfZk+DxH1GRcDrv3OwwETzA0/I2+VFoJwlD/EIFQbZTr2anZsUM/G1wej96aDB4vPExQqHM+A/60ROOyOenjZS1g41TnEu6rovmUGMuHPStcFNxoxXJfkm/x0CVRu6lXuqxY8I=
+deploy:
+  provider: rubygems
+  gem: factor-connector-slack
+  api_key:
+    secure: T24epDVon+Cx5yVd02i1ToHjr5pWnMjTCyudzlAXLBF9Rtsta6N6O41RNuHk94KXzoyfS4r8snblzENqR4OFYGE7VkDR1S14nE1rJWM7O9H3ExJh+mPrGtZNQ2Iaxl/a6wGNUb8TQYQEV8v+Qdt7FyFvtESZxHbSClJ7ChOZ1v0=
+  on:
+    tags: true
