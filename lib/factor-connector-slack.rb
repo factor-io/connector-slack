@@ -37,6 +37,15 @@ class SlackConnectorDefinition < Factor::Connector::Definition
     channel
   end
 
+  def look_up_user(token, user_name_or_id)
+    info "Getting information for user '#{user_name_or_id}'"
+    user_list = get_resource('users.list', token) || {}
+    users = user_list['members'] || []
+    user = users.find {|c| c['name']==user_name_or_id || c['id']==user_name_or_id}
+    fail "No User found with name or id '#{user_name_or_id}'" unless user
+    user
+  end
+
   resource :channel do
     action :list do |params|
       token = load_and_validate(params,:token, required:true)
@@ -53,12 +62,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
       user_name_or_id    = load_and_validate(params,:user, required:true)
 
       channel = look_up_channel(token,channel_name_or_id)
-
-      info "Getting information for user '#{user_name_or_id}'"
-      user_list = get_resource('users.list', token) || {}
-      users = user_list['members'] || []
-      user = users.find {|c| c['name']==user_name_or_id || c['id']==user_name_or_id}
-      fail "No Channel found with name or id '#{user_name_or_id}'" unless user
+      user    = look_up_user(token,user_name_or_id)
 
       info "Inviting user '#{user['id']}'' to channel '#{channel}'"
       invite_response = get_resource('channels.invite', token, user:user['id'], channel:channel['id']) || {}
@@ -112,6 +116,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
       token = load_and_validate(params,:token, required:true)
       name  = load_and_validate(params,:name, required:true)
 
+      info "Creating a new group with name '#{name}'"
       group = get_resource('groups.create', token, name:name)
 
       respond group
