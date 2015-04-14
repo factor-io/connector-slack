@@ -8,7 +8,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
     uri             = "https://slack.com/api/#{resource}"
     payload[:token] = token
     raw_response    = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
-    response        = JSON.parse(raw_response)
+    response        = JSON.parse(raw_response, symbolize_names: true)
     fail response['error'] unless response['ok']
     response
   rescue

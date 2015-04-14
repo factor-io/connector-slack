@@ -1,9 +1,12 @@
 require "codeclimate-test-reporter"
 require 'rspec'
+require 'factor/connector/test'
+require 'factor/connector/runtime'
 
 CodeClimate::TestReporter.start if ENV['CODECLIMATE_REPO_TOKEN']
 
-Dir.glob('./lib/factor-connector-slack.rb').each { |f| require f }
+require 'factor-connector-slack'
 
 RSpec.configure do |c|
+  c.include Factor::Connector::Test
 end
