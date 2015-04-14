@@ -64,7 +64,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
       channel = look_up_channel(token,channel_name_or_id)
       user    = look_up_user(token,user_name_or_id)
 
-      info "Inviting user '#{user[:id]}'' to channel '#{channel}'"
+      info "Inviting user '#{user[:name]} (#{user[:id]})' to channel '#{channel[:name]} (#{channel[:id]})'"
       invite_response = get_resource('channels.invite', token, user:user[:id], channel:channel[:id]) || {}
 
       respond invite_response
@@ -76,7 +76,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Getting history list for channel '#{channel[:id]}'"
+      info "Getting history list for channel '#{channel[:name]} (#{channel[:id]})'"
       history = get_resource('channels.history', token, channel:channel[:id]) || {}
 
       respond history
@@ -89,7 +89,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Setting topic for channel '#{channel[:id]}'"
+      info "Setting topic for channel '#{channel[:name]} (#{channel[:id]})'"
       topic = get_resource('channels.setTopic', token, channel:channel[:id], topic:topic) || {}
 
       respond topic
@@ -104,7 +104,7 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Posting a message to channel '#{channel[:id]}'"
+      info "Posting a message to channel '#{channel[:name]} (#{channel[:id]})'"
       topic = get_resource('chat.postMessage', token, channel:channel[:id], text:text) || {}
 
       respond topic
