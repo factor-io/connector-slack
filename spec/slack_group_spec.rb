@@ -1,54 +1,20 @@
 require 'spec_helper'
+require 'securerandom'
 
-describe 'slack' do
-
-  before(:each) do
-    @token = ENV['SLACK_TOKEN']
-    @user = ENV['SLACK_USER']
-    @seed = Random.new(1234)
-    @group = 'text-' + Random.rand(9999).to_s
-    @name = 'text-' + Random.rand(9999).to_s
-    uri = 'https://slack.com/api/groups.create'
-    payload = {
-      token: @token,
-      name: @group
-    }
-    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
-    response = JSON.parse(raw_response)
-  end
-
-  after(:each) do
-    uri = 'https://slack.com/api/groups.kick'
-    payload = {
-      token: @token,
-      channel: @group,
-      user: @user
-    }
-    raw_response = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
-  end
-
+describe SlackConnectorDefinition do
   describe 'group' do
     it 'can create a private group' do
-      # service_instance = service_instance('slack_group')
-      # params = {
-      #   'token' => @token,
-      #   'name' => @name
-      # }
-      # service_instance.test_action('create', params) do
-      #   expect_return
-      # end
+      # name = 'group-' + Random.rand(9999).to_s
+      # @runtime.run([:group,:create], token:@token, name:name)
+      # expect(@runtime).to respond
+      # delete_group(name)
     end
 
     it 'Invite a user to a private group' do
-      # service_instance = service_instance('slack_group')
-      # params = {
-      #   'token' => @token,
-      #   'channel' => @group,
-      #   'user' => @user
-      # }
-      # service_instance.test_action('invite', params) do
-      #   expect_return
-      # end
+      # name = 'group-' + Random.rand(9999).to_s
+      # group = create_group(name)
+      # @runtime.run([:group,:invite], token:@token, channel:group[:id], user:@user)
+      # expect(@runtime).to respond
     end
   end
 end
