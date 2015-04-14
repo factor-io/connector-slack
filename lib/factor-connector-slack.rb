@@ -9,10 +9,10 @@ class SlackConnectorDefinition < Factor::Connector::Definition
     payload[:token] = token
     raw_response    = RestClient::Request.execute(url:uri, method:'POST', ssl_version:'SSLv23', payload:payload)
     response        = JSON.parse(raw_response, symbolize_names: true)
-    fail response['error'] unless response['ok']
+    fail response[:error] unless response[:ok]
     response
-  rescue
-    fail "Failed to connect to Slack API, check your credentials"
+  rescue => ex
+    fail "Failed to connect to Slack API, check your credentials", exception: ex
   end
 
   def load_and_validate(params,key,requirements={})
@@ -31,8 +31,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
   def look_up_channel(token,channel_name_or_id)
     info "Getting information for channel '#{channel_name_or_id}'"
     channel_list = get_resource('channels.list', token) || {}
-    channels = channel_list['channels'] || []
-    channel = channels.find {|c| c['name']==channel_name_or_id || c['id']==channel_name_or_id}
+    channels = channel_list[:channels] || []
+    channel = channels.find {|c| c[:name]==channel_name_or_id || c[:id]==channel_name_or_id}
     fail "No Channel found with name or id '#{channel_name_or_id}'" unless channel
     channel
   end
@@ -40,8 +40,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
   def look_up_user(token, user_name_or_id)
     info "Getting information for user '#{user_name_or_id}'"
     user_list = get_resource('users.list', token) || {}
-    users = user_list['members'] || []
-    user = users.find {|c| c['name']==user_name_or_id || c['id']==user_name_or_id}
+    users = user_list[:members] || []
+    user = users.find {|c| c[:name]==user_name_or_id || c[:id]==user_name_or_id}
     fail "No User found with name or id '#{user_name_or_id}'" unless user
     user
   end
@@ -64,8 +64,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
       channel = look_up_channel(token,channel_name_or_id)
       user    = look_up_user(token,user_name_or_id)
 
-      info "Inviting user '#{user['id']}'' to channel '#{channel}'"
-      invite_response = get_resource('channels.invite', token, user:user['id'], channel:channel['id']) || {}
+      info "Inviting user '#{user[:id]}'' to channel '#{channel}'"
+      invite_response = get_resource('channels.invite', token, user:user[:id], channel:channel[:id]) || {}
 
       respond invite_response
     end
@@ -76,8 +76,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Getting history list for channel '#{channel['id']}'"
-      history = get_resource('channels.history', token, channel:channel['id']) || {}
+      info "Getting history list for channel '#{channel[:id]}'"
+      history = get_resource('channels.history', token, channel:channel[:id]) || {}
 
       respond history
     end
@@ -89,8 +89,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Setting topic for channel '#{channel['id']}'"
-      topic = get_resource('channels.setTopic', token, channel:channel['id'], topic:topic) || {}
+      info "Setting topic for channel '#{channel[:id]}'"
+      topic = get_resource('channels.setTopic', token, channel:channel[:id], topic:topic) || {}
 
       respond topic
     end
@@ -104,8 +104,8 @@ class SlackConnectorDefinition < Factor::Connector::Definition
 
       channel = look_up_channel(token,channel_name_or_id)
 
-      info "Posting a message to channel '#{channel['id']}'"
-      topic = get_resource('chat.postMessage', token, channel:channel['id'], text:text) || {}
+      info "Posting a message to channel '#{channel[:id]}'"
+      topic = get_resource('chat.postMessage', token, channel:channel[:id], text:text) || {}
 
       respond topic
     end

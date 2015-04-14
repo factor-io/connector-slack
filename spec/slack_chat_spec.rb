@@ -13,7 +13,7 @@ describe SlackConnectorDefinition do
 
       @runtime.run([:chat,:send], token:@token, channel:@channel, text:'hello world')
 
-      expect(@runtime).to respond ok:true
+      expect(@runtime).to respond
     end
   end
 end
